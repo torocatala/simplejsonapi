@@ -1,48 +1,20 @@
-# Symfony Docker
+Given the attached MySQL database schema, please write a simple JSON API that can find users by `is_active`, `is_member`, `last_login_at` (range), `user_type` (multiple values)
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+* Please use Symfony framework (version 6.1) and Doctrine bundle (ORM)
+* Please use PHP 8.1
+* Authentication is NOT necessary
+* Commit message (if has) should be in English
+* Comments in the code should be in English
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+Here are some links that will help you
 
-## Getting Started
+* How to create a Symfony project: https://symfony.com/doc/current/setup.html
+* How to use Doctrine in Symfony: https://symfony.com/doc/current/doctrine.html
+* How to return JSON response: https://symfony.com/doc/current/controller.html#returning-json-response
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull -d --wait` to start the project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+Bonus:
 
-## Features
-
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
-
-**Enjoy!**
-
-## Docs
-
-1. [Build options](docs/build.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using a Makefile](docs/makefile.md)
-8. [Troubleshooting](docs/troubleshooting.md)
-
-## License
-
-Symfony Docker is available under the MIT License.
-
-## Credits
-
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+* Using Laravel Homestead for development: https://laravel.com/docs/9.x/homestead 
+* API documentation (in English)
+* Simple unit test
+* Performance optimization

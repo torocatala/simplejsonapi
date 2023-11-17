@@ -33,6 +33,9 @@ RUN set -eux; \
 	;
 
 ###> recipes ###
+###> doctrine/doctrine-bundle ###
+RUN docker-php-ext-install -j"$(nproc)" pdo pdo_mysql;
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 COPY --link frankenphp/conf.d/app.ini $PHP_INI_DIR/conf.d/
