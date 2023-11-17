@@ -23,3 +23,4 @@ It can filter users by  `is_active`, `is_member`, `last_login_at` (from and to),
 
 ## Things to consider
 - The application creates and SSL certificate on start which you will need to accept on your machine in order to use it.
+- There is a lack of parameter validation
