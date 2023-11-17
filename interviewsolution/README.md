@@ -1,20 +1,25 @@
-Given the attached MySQL database schema, please write a simple JSON API that can find users by `is_active`, `is_member`, `last_login_at` (range), `user_type` (multiple values)
+# Simple JSON API that retrieves users and filters by multiple fields
 
-* Please use Symfony framework (version 6.1) and Doctrine bundle (ORM)
-* Please use PHP 8.1
-* Authentication is NOT necessary
-* Commit message (if has) should be in English
-* Comments in the code should be in English
+## Dependencies
+- A system that can run bash scripts
+- Docker
 
-Here are some links that will help you
+## How to run
+- Execute: `./start.sh`
 
-* How to create a Symfony project: https://symfony.com/doc/current/setup.html
-* How to use Doctrine in Symfony: https://symfony.com/doc/current/doctrine.html
-* How to return JSON response: https://symfony.com/doc/current/controller.html#returning-json-response
+## What does it include
+- Self contained multi-service system infraestructure-as-code using docker. Runs with an idempotent start script
+- A MySQL database with indexing optimized for data retrieval
+- A Symfony 6.3 application running on top of PHP 8.2.12 that serves and endpoint that returns users in JSON format.
+It can filter users by  `is_active`, `is_member`, `last_login_at` (from and to), `user_type` (multiple values).
+- The Symfony application also uses in-memory caching achieving sub 10ms responses
 
-Bonus:
+## How to consume the API
+- Interactive swagger OpenAPI documentation can be found at https://localhost/api/doc
+- Query example: https://localhost/api/users?isActive=true&isMember=false&userType[]=3&userType[]=2&lastLoginAtFrom=2022-02-01
 
-* Using Laravel Homestead for development: https://laravel.com/docs/9.x/homestead 
-* API documentation (in English)
-* Simple unit test
-* Performance optimization
+## Testing
+- There are two unit tests. You can use `./exec.sh` to get a shell inside the app container and executing `vendor/bin/phpunit` should execute the unit tests.
+
+## Things to consider
+- The application creates and SSL certificate on start which you will need to accept on your machine in order to use it.

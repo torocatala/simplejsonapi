@@ -11,6 +11,9 @@ use App\Entity\User;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use OpenApi\Annotations as OA;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Service\QueryParameterExtractor;
+use App\Service\CacheService;
+use App\Formatter\UserResponseFormatter;
 
 class UsersController extends AbstractController
 {
@@ -69,36 +72,20 @@ class UsersController extends AbstractController
      * )
      * @OA\Tag(name="users")
      */
-    public function index(Request $request, UserRepository $userRepository, ApcuAdapter $cache): JsonResponse
+    public function index(Request $request, UserRepository $userRepository, CacheService $cacheService, QueryParameterExtractor $parameterExtractor): JsonResponse
     {
-        //Extract parameters
-        $isActive = $request->query->has('isActive') ? filter_var($request->query->get('isActive'), FILTER_VALIDATE_BOOLEAN) : null;
-        $isMember = $request->query->has('isMember') ? filter_var($request->query->get('isMember'), FILTER_VALIDATE_BOOLEAN) : null;
-        $lastLoginAtFrom = $request->query->get('lastLoginAtFrom');
-        $lastLoginAtTo = $request->query->get('lastLoginAtTo');
-        $allQueryParams = $request->query->all();
-        $userTypes = $allQueryParams['userType'] ?? [];
+        //Extract parameters from http request
+        $params = $parameterExtractor->extract($request);
 
-        //Cache
-        $cachekey = urlencode($_SERVER['REQUEST_URI']);
-        $cacheItem = $cache->getItem($cachekey);
-        if (!$cacheItem->isHit()) {
+        //Define cache key based on query parameters
+        $cacheKey = urlencode(json_encode($params));
 
-            //Use case
-            $users = $userRepository->findUsersByFilters($isActive, $isMember, $lastLoginAtFrom, $lastLoginAtTo, $userTypes);
+        //Retrieve data from cache or DB
+        $users = $cacheService->getOrSetCacheItem($cacheKey, function() use ($userRepository, $params) {
+            return $userRepository->findUsersByFilters(...$params);
+        });
 
-            $cacheItem->set($users);
-            $cacheItem->expiresAfter(300); // TTL in seconds
-            $cache->save($cacheItem);
-        }
-
-        $users = $cacheItem->get();
-
-        //Prepare response
-        $usersArray = array_map(function ($user) {
-            return $user->toArray();
-        }, $users);
-
-        return $this->json($usersArray);
+        //Return formatted response
+        return $this->json(UserResponseFormatter::format($users));
     }
 }
