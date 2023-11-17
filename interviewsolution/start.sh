@@ -9,6 +9,8 @@ docker compose up --pull always -d --wait
 
 echo "Project running in https://localhost"
 
-echo "Run docker compose down --remove-orphans to kill the project"
+echo "Check the main endpoint in https://localhost/api/users"
 
-docker compose logs -f
+echo "And the documentation in https://localhost/api/doc"
+
+echo "Run docker compose down --remove-orphans to kill the project"
